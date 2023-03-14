@@ -6,7 +6,7 @@ const {
 
 module.exports = {
 	async payOrder(req, res) {
-		const t = sequelize.transaction()
+		const t = await sequelize.transaction();
 		try {
 			const { orderId } = req.params
 			const order = await Order.findByPk(orderId, { include: Product, transaction: t })
