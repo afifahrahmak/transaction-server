@@ -23,7 +23,6 @@ module.exports = (sequelize, DataTypes) => {
 			isPaid: DataTypes.BOOLEAN,
 			orderDate: DataTypes.DATE,
 			paidDate: DataTypes.DATE,
-			paidDate: DataTypes.DATE,
 		},
 		{
 			sequelize,
