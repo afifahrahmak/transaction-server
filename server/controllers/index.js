@@ -6,8 +6,8 @@ const {
 
 module.exports = {
 	async payOrder(req, res) {
+		const t = sequelize.transaction()
 		try {
-			const t = sequelize.transaction()
 			const { orderId } = req.params
 			const order = await Order.findByPk(orderId, { include: Product, transaction: t })
 			if (!order) throw { status: 404, msg: 'Order not found' }
@@ -18,7 +18,7 @@ module.exports = {
 				{ isPaid: true, paidDate: new Date() },
 				{ where: { id: orderId }, transaction: t }
 			)
-			await Product.decrement('stock', { by: Order.quantity, where: { id: order.Product.id } })
+			await Product.decrement('stock', { by: Order.quantity, where: { id: order.Product.id, transaction: t } })
 			await t.commit()
 			res.status(200).json({ msg: `Pay order with ID ${orderId} success` });
 		} catch (error) {
