@@ -8,6 +8,8 @@ app.use(express.urlencoded({ extended: false }));
 
 app.get("/", (req, res) => res.status(200).json({ msg: "Hello world" }));
 app.put("/payOrder/:orderId", Controller.payOrder);
+app.get("/orders", Controller.getOrders);
+app.get("/products", Controller.getProducts);
 
 app.listen(PORT, () => {
   console.log("server is running on port: ", PORT);

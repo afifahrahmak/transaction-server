@@ -18,12 +18,27 @@ module.exports = {
 				{ isPaid: true, paidDate: new Date() },
 				{ where: { id: orderId }, transaction: t }
 			)
-			await Product.decrement('stock', { by: Order.quantity, where: { id: order.Product.id, transaction: t } })
+			await Product.decrement('stock', { by: Order.quantity, where: { id: order.Product.id }, transaction: t })
 			await t.commit()
 			res.status(200).json({ msg: `Pay order with ID ${orderId} success` });
 		} catch (error) {
-			console.log(error);
-			await t.rollback()
+			res.status(500).json(error)
+		}
+	},
+	async getOrders(req, res) {
+		try {
+			const orders = await Order.findAll()
+			console.log(orders);
+			res.status(200).json(orders)
+		} catch (error) {
+			res.status(500).json(error)
+		}
+	},
+	async getProducts(req, res) {
+		try {
+			const products = await Product.findAll()
+			res.status(200).json(products)
+		} catch (error) {
 			res.status(500).json(error)
 		}
 	}
